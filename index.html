@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI-Hebel – 1 Tool. 1 Workflow. 1 Prompt.</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --black: #09090b;
-    --white: #fafafa;
+    --bg: #0d0d1a;
+    --white: #ffffff;
     --accent: #22d3ee;
-    --accent2: #a78bfa;
-    --muted: #71717a;
+    --pink: #e879f9;
+    --muted: #9ca3af;
     --border: rgba(255,255,255,0.08);
     --card: rgba(255,255,255,0.04);
   }
@@ -22,34 +22,11 @@
 
   body {
     font-family: 'DM Sans', sans-serif;
-    background: var(--black);
+    background: var(--bg);
     color: var(--white);
     min-height: 100vh;
     overflow-x: hidden;
-  }
-
-  /* NOISE OVERLAY */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.4;
-  }
-
-  /* GLOW BACKGROUND */
-  .glow-bg {
-    position: fixed;
-    top: -20%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 800px;
-    height: 600px;
-    background: radial-gradient(ellipse, rgba(34,211,238,0.06) 0%, rgba(167,139,250,0.04) 40%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
+    -webkit-font-smoothing: antialiased;
   }
 
   /* NAV */
@@ -57,32 +34,29 @@
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 100;
-    padding: 16px 24px;
+    padding: 18px 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(9,9,11,0.8);
+    background: rgba(13,13,26,0.85);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
   }
 
   .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 18px;
-    letter-spacing: -0.5px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
     color: var(--white);
   }
 
-  .nav-logo span { color: var(--accent); }
-
   .nav-cta {
     background: var(--accent);
-    color: var(--black);
+    color: #000;
     border: none;
-    padding: 8px 18px;
+    padding: 10px 20px;
     font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 13px;
     cursor: pointer;
     border-radius: 6px;
@@ -95,14 +69,24 @@
   /* HERO */
   .hero {
     position: relative;
-    z-index: 1;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 100px 24px 60px;
+    padding: 120px 24px 80px;
+    overflow: hidden;
+  }
+
+  /* GRADIENT BG */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(34,211,238,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(232,121,249,0.06) 0%, transparent 50%);
+    pointer-events: none;
   }
 
   .badge {
@@ -110,14 +94,16 @@
     align-items: center;
     gap: 6px;
     background: rgba(34,211,238,0.08);
-    border: 1px solid rgba(34,211,238,0.2);
+    border: 1px solid rgba(34,211,238,0.25);
     color: var(--accent);
     font-size: 12px;
     font-weight: 500;
-    padding: 5px 12px;
+    padding: 6px 14px;
     border-radius: 100px;
-    margin-bottom: 24px;
-    animation: fadeUp 0.6s ease both;
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    animation: fadeUp 0.5s ease both;
   }
 
   .badge-dot {
@@ -133,41 +119,44 @@
   }
 
   .hero-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(36px, 8vw, 72px);
-    line-height: 1.05;
-    letter-spacing: -2px;
-    max-width: 800px;
-    margin-bottom: 20px;
-    animation: fadeUp 0.6s ease 0.1s both;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 12vw, 140px);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    max-width: 900px;
+    margin-bottom: 8px;
+    animation: fadeUp 0.5s ease 0.1s both;
+    text-transform: uppercase;
   }
 
-  .hero-title .highlight {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  .hero-title .line1 { color: var(--white); display: block; }
+  .hero-title .line2 { color: var(--white); display: block; }
+  .hero-title .line3 {
+    display: block;
+    background: linear-gradient(90deg, var(--accent), var(--pink));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .hero-sub {
-    font-size: clamp(16px, 3vw, 20px);
+    font-size: clamp(15px, 2vw, 18px);
     color: var(--muted);
-    max-width: 520px;
-    line-height: 1.6;
-    margin-bottom: 40px;
+    max-width: 480px;
+    line-height: 1.7;
+    margin: 24px 0 40px;
     font-weight: 300;
-    animation: fadeUp 0.6s ease 0.2s both;
+    animation: fadeUp 0.5s ease 0.2s both;
   }
 
   /* EMAIL FORM */
   .email-form {
     display: flex;
     gap: 8px;
-    max-width: 440px;
+    max-width: 460px;
     width: 100%;
     margin-bottom: 16px;
-    animation: fadeUp 0.6s ease 0.3s both;
+    animation: fadeUp 0.5s ease 0.3s both;
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -175,7 +164,7 @@
   .email-input {
     flex: 1;
     min-width: 220px;
-    background: rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.07);
     border: 1px solid var(--border);
     color: var(--white);
     padding: 14px 18px;
@@ -191,10 +180,10 @@
 
   .submit-btn {
     background: var(--accent);
-    color: var(--black);
+    color: #000;
     border: none;
-    padding: 14px 24px;
-    font-family: 'Syne', sans-serif;
+    padding: 14px 28px;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 700;
     font-size: 14px;
     cursor: pointer;
@@ -211,7 +200,20 @@
   .form-note {
     color: var(--muted);
     font-size: 12px;
-    animation: fadeUp 0.6s ease 0.4s both;
+    animation: fadeUp 0.5s ease 0.4s both;
+  }
+
+  .success-msg {
+    display: none;
+    background: rgba(34,211,238,0.08);
+    border: 1px solid rgba(34,211,238,0.2);
+    color: var(--accent);
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+    max-width: 460px;
+    width: 100%;
   }
 
   /* SOCIAL PROOF */
@@ -220,19 +222,17 @@
     align-items: center;
     gap: 12px;
     margin-top: 40px;
-    animation: fadeUp 0.6s ease 0.5s both;
+    animation: fadeUp 0.5s ease 0.5s both;
     flex-wrap: wrap;
     justify-content: center;
   }
 
-  .avatars {
-    display: flex;
-  }
+  .avatars { display: flex; }
 
   .avatar {
-    width: 28px; height: 28px;
+    width: 30px; height: 30px;
     border-radius: 50%;
-    border: 2px solid var(--black);
+    border: 2px solid var(--bg);
     margin-left: -8px;
     font-size: 11px;
     display: flex;
@@ -243,55 +243,72 @@
 
   .avatar:first-child { margin-left: 0; }
   .av1 { background: #22d3ee; color: #000; }
-  .av2 { background: #a78bfa; color: #000; }
+  .av2 { background: #e879f9; color: #000; }
   .av3 { background: #34d399; color: #000; }
   .av4 { background: #fb923c; color: #000; }
   .av5 { background: #f472b6; color: #000; }
 
-  .proof-text {
-    font-size: 13px;
-    color: var(--muted);
-  }
-
+  .proof-text { font-size: 13px; color: var(--muted); }
   .proof-text strong { color: var(--white); }
 
   /* DIVIDER */
-  .divider {
-    position: relative;
-    z-index: 1;
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 0;
+  hr { border: none; border-top: 1px solid var(--border); }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    padding: 48px 24px;
+    flex-wrap: wrap;
+  }
+
+  .stat { text-align: center; }
+
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 2px;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
 
   /* FEATURES */
   .section {
-    position: relative;
-    z-index: 1;
     padding: 80px 24px;
-    max-width: 960px;
+    max-width: 1000px;
     margin: 0 auto;
   }
 
   .section-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 3px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 4px;
     color: var(--accent);
     text-transform: uppercase;
     text-align: center;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
 
   .section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(28px, 5vw, 42px);
-    font-weight: 800;
-    letter-spacing: -1px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 80px);
+    letter-spacing: 2px;
     text-align: center;
     margin-bottom: 48px;
-    line-height: 1.15;
+    line-height: 1;
+    text-transform: uppercase;
   }
 
   .cards {
@@ -309,42 +326,30 @@
   }
 
   .card:hover {
-    border-color: rgba(34,211,238,0.2);
+    border-color: rgba(34,211,238,0.25);
     transform: translateY(-2px);
   }
 
-  .card-icon {
-    font-size: 28px;
-    margin-bottom: 16px;
-    display: block;
-  }
+  .card-icon { font-size: 28px; margin-bottom: 16px; display: block; }
 
   .card-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 17px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
     margin-bottom: 8px;
-    letter-spacing: -0.3px;
   }
 
-  .card-desc {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.6;
-    font-weight: 300;
-  }
+  .card-desc { font-size: 14px; color: var(--muted); line-height: 1.6; font-weight: 300; }
 
-  /* PREVIEW SECTION */
+  /* PREVIEW */
   .preview-section {
-    position: relative;
-    z-index: 1;
     padding: 0 24px 80px;
-    max-width: 960px;
+    max-width: 1000px;
     margin: 0 auto;
   }
 
   .preview-box {
-    background: rgba(255,255,255,0.03);
+    background: rgba(255,255,255,0.02);
     border: 1px solid var(--border);
     border-radius: 16px;
     overflow: hidden;
@@ -364,16 +369,9 @@
   .dot-y { background: #febc2e; }
   .dot-g { background: #28c840; }
 
-  .preview-title {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    color: var(--muted);
-    margin-left: 8px;
-  }
+  .preview-title { font-size: 13px; color: var(--muted); margin-left: 8px; }
 
-  .preview-content {
-    padding: 32px;
-  }
+  .preview-content { padding: 32px; }
 
   .preview-date {
     font-size: 11px;
@@ -384,12 +382,10 @@
   }
 
   .preview-headline {
-    font-family: 'Syne', sans-serif;
-    font-size: 22px;
-    font-weight: 800;
-    margin-bottom: 20px;
-    letter-spacing: -0.5px;
-    line-height: 1.3;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
   }
 
   .preview-block {
@@ -410,41 +406,21 @@
   }
 
   .preview-block-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
     margin-bottom: 4px;
   }
 
-  .preview-block-text {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.5;
-    font-weight: 300;
-  }
+  .preview-block-text { font-size: 13px; color: var(--muted); line-height: 1.5; font-weight: 300; }
 
-  .preview-block-2 {
-    border-color: rgba(167,139,250,0.12);
-    background: rgba(167,139,250,0.05);
-  }
-
-  .preview-block-2 .preview-block-label { color: var(--accent2); }
-
-  .preview-block-3 {
-    border-color: rgba(52,211,153,0.12);
-    background: rgba(52,211,153,0.05);
-  }
-
+  .preview-block-2 { border-color: rgba(232,121,249,0.12); background: rgba(232,121,249,0.05); }
+  .preview-block-2 .preview-block-label { color: var(--pink); }
+  .preview-block-3 { border-color: rgba(52,211,153,0.12); background: rgba(52,211,153,0.05); }
   .preview-block-3 .preview-block-label { color: #34d399; }
 
   /* TESTIMONIALS */
-  .testimonials {
-    position: relative;
-    z-index: 1;
-    padding: 0 24px 80px;
-    max-width: 960px;
-    margin: 0 auto;
-  }
+  .testimonials { padding: 0 24px 80px; max-width: 1000px; margin: 0 auto; }
 
   .testi-grid {
     display: grid;
@@ -459,61 +435,41 @@
     padding: 24px;
   }
 
-  .testi-stars {
-    color: #fbbf24;
-    font-size: 14px;
-    margin-bottom: 12px;
-  }
-
-  .testi-text {
-    font-size: 14px;
-    color: #d4d4d8;
-    line-height: 1.6;
-    margin-bottom: 16px;
-    font-weight: 300;
-    font-style: italic;
-  }
-
-  .testi-author {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--white);
-  }
-
-  .testi-role {
-    font-size: 12px;
-    color: var(--muted);
-  }
+  .testi-stars { color: #fbbf24; font-size: 14px; margin-bottom: 12px; }
+  .testi-text { font-size: 14px; color: #d4d4d8; line-height: 1.6; margin-bottom: 16px; font-weight: 300; font-style: italic; }
+  .testi-author { font-size: 13px; font-weight: 600; color: var(--white); }
+  .testi-role { font-size: 12px; color: var(--muted); }
 
   /* CTA BOTTOM */
   .cta-bottom {
-    position: relative;
-    z-index: 1;
     padding: 80px 24px;
     text-align: center;
     border-top: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-bottom::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, rgba(34,211,238,0.06) 0%, transparent 60%);
+    pointer-events: none;
   }
 
   .cta-bottom h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(28px, 5vw, 48px);
-    font-weight: 800;
-    letter-spacing: -1.5px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 90px);
+    letter-spacing: 2px;
     margin-bottom: 16px;
-    line-height: 1.1;
+    line-height: 1;
+    text-transform: uppercase;
   }
 
-  .cta-bottom p {
-    color: var(--muted);
-    font-size: 16px;
-    margin-bottom: 32px;
-    font-weight: 300;
-  }
+  .cta-bottom p { color: var(--muted); font-size: 16px; margin-bottom: 32px; font-weight: 300; }
 
   /* FOOTER */
   footer {
-    position: relative;
-    z-index: 1;
     padding: 24px;
     text-align: center;
     border-top: 1px solid var(--border);
@@ -528,48 +484,33 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* SUCCESS STATE */
-  .success-msg {
-    display: none;
-    background: rgba(34,211,238,0.08);
-    border: 1px solid rgba(34,211,238,0.2);
-    color: var(--accent);
-    padding: 14px 24px;
-    border-radius: 8px;
-    font-size: 14px;
-    text-align: center;
-    max-width: 440px;
-    width: 100%;
-  }
-
   @media (max-width: 600px) {
-    .hero-title { letter-spacing: -1px; }
     .email-form { flex-direction: column; }
     .email-input { min-width: 100%; }
     .submit-btn { width: 100%; }
+    .stats-bar { gap: 32px; }
   }
 </style>
 </head>
 <body>
 
-<div class="glow-bg"></div>
-
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">AI<span>-</span>Hebel</div>
-  <a href="#anmelden" class="nav-cta">Kostenlos abonnieren</a>
+  <div class="nav-logo">AI<span style="color: var(--accent);">-</span>Hebel</div>
+  <a href="#anmelden" class="nav-cta">Jetzt kostenlos erhalten</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="badge">
     <span class="badge-dot"></span>
-    Jeden Dienstag – kostenlos
+    Der kostenlose KI-Newsletter · Jeden Dienstag
   </div>
 
   <h1 class="hero-title">
-    KI nicht verstehen.<br>
-    KI <span class="highlight">benutzen.</span>
+    <span class="line1">KI nicht</span>
+    <span class="line2">verstehen.</span>
+    <span class="line3">KI benutzen.</span>
   </h1>
 
   <p class="hero-sub">
@@ -578,14 +519,13 @@
 
   <div class="email-form" id="anmelden">
     <input type="email" class="email-input" placeholder="deine@email.de" id="emailInput">
-    <button class="submit-btn" onclick="handleSubmit()">Jetzt abonnieren →</button>
+    <button class="submit-btn" onclick="handleSubmit()">Jetzt kostenlos erhalten →</button>
   </div>
 
-  <div class="success-msg" id="successMsg">
-    ✓ Eingetragen! Schau in dein Postfach – dein Bonus wartet.
-  </div>
+  <div class="success-msg" id="successMsg"></div>
 
-  <p class="form-note">100% kostenlos · Jederzeit abmeldbar · Kein Spam</p>
+  <p class="form-note">100% kostenlos · Kein Spam</p>
+  <p style="color: #3f3f46; font-size: 11px; margin-top: 6px; animation: fadeUp 0.5s ease 0.4s both;">Wöchentlicher Newsletter · Abmeldung jederzeit mit einem Klick</p>
 
   <div class="social-proof">
     <div class="avatars">
@@ -599,9 +539,9 @@
   </div>
 </section>
 
-<hr class="divider">
+<hr>
 
-<!-- WHAT YOU GET -->
+<!-- FEATURES -->
 <section class="section">
   <div class="section-label">Was dich erwartet</div>
   <h2 class="section-title">3 Dinge. Jeden Dienstag.<br>Sofort anwendbar.</h2>
@@ -644,19 +584,19 @@
       <div class="preview-block">
         <div class="preview-block-label">🔧 Tool der Woche</div>
         <div class="preview-block-title">Notion AI – dein intelligentes Second Brain</div>
-        <div class="preview-block-text">Notion AI fasst zusammen, schreibt weiter und strukturiert – direkt in deinem Workspace. Kosten: 10$/Monat. Lohnt sich ab Tag 1 wenn du mehr als 3 Dokumente pro Woche erstellst. Rating: 9/10 ⭐</div>
+        <div class="preview-block-text">Notion AI fasst zusammen, schreibt weiter und strukturiert – direkt in deinem Workspace. Kosten: 10$/Monat. Lohnt sich ab Tag 1. Rating: 9/10 ⭐</div>
       </div>
 
       <div class="preview-block preview-block-2">
         <div class="preview-block-label">⚙️ Workflow</div>
         <div class="preview-block-title">Meeting zu Aufgaben in 2 Minuten</div>
-        <div class="preview-block-text">Notizen reinkopieren → Notion AI "Zusammenfassen" → Aufgabenliste exportieren. Spart ~45 Minuten pro Meeting. Sofort kopierbar.</div>
+        <div class="preview-block-text">Notizen reinkopieren → Notion AI "Zusammenfassen" → Aufgabenliste exportieren. Spart ~45 Minuten pro Meeting.</div>
       </div>
 
       <div class="preview-block preview-block-3">
         <div class="preview-block-label">💬 Prompt</div>
         <div class="preview-block-title">Der Angebots-Generator</div>
-        <div class="preview-block-text">"Du bist ein erfahrener Berater. Schreib mir ein Angebot für [LEISTUNG]. Max 150 Wörter, klarer Nutzen, kein Fachjargon." → Direkt einsetzbar auf deiner Website oder in Proposals.</div>
+        <div class="preview-block-text">"Du bist ein erfahrener Berater. Schreib mir ein Angebot für [LEISTUNG]. Max 150 Wörter, klarer Nutzen, kein Fachjargon." → Direkt einsetzbar.</div>
       </div>
     </div>
   </div>
@@ -670,19 +610,19 @@
   <div class="testi-grid">
     <div class="testi-card">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Endlich ein Newsletter der nicht nur erklärt, sondern zeigt. Ich habe den Workflow aus Ausgabe 2 direkt eingesetzt und spare jetzt 3 Stunden pro Woche."</p>
+      <p class="testi-text">"Endlich ein Newsletter der nicht nur erklärt, sondern zeigt. Ich spare jetzt 3 Stunden pro Woche."</p>
       <div class="testi-author">Markus T.</div>
       <div class="testi-role">Freelance Consultant, München</div>
     </div>
     <div class="testi-card">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Der Prompt aus der ersten Ausgabe hat mir mein komplettes Angebots-System ersetzt. In 10 Minuten statt 2 Stunden."</p>
+      <p class="testi-text">"Der Prompt aus der ersten Ausgabe hat mein komplettes Angebots-System ersetzt. In 10 Minuten statt 2 Stunden."</p>
       <div class="testi-author">Sarah K.</div>
       <div class="testi-role">Online-Unternehmerin, Hamburg</div>
     </div>
     <div class="testi-card">
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Ich abonniere viele Newsletter – AI-Hebel ist der einzige den ich wirklich lese. Weil er liefert was er verspricht."</p>
+      <p class="testi-text">"AI-Hebel ist der einzige Newsletter den ich wirklich lese. Weil er liefert was er verspricht."</p>
       <div class="testi-author">Thomas R.</div>
       <div class="testi-role">E-Commerce, Berlin</div>
     </div>
@@ -691,24 +631,24 @@
 
 <!-- CTA BOTTOM -->
 <div class="cta-bottom">
-  <h2>Bereit deinen<br><span style="color: var(--accent);">ersten Hebel</span> anzusetzen?</h2>
+  <h2>Bereit deinen<br><span style="color: var(--accent);">ersten Hebel</span><br>anzusetzen?</h2>
   <p>Kostenlos. Jeden Dienstag. Abmeldung jederzeit.</p>
 
   <div class="email-form" style="margin: 0 auto 16px;">
     <input type="email" class="email-input" placeholder="deine@email.de" id="emailInput2">
-    <button class="submit-btn" onclick="handleSubmit2()">Jetzt abonnieren →</button>
+    <button class="submit-btn" onclick="handleSubmit2()">Jetzt kostenlos erhalten →</button>
   </div>
 
   <div class="success-msg" id="successMsg2" style="margin: 0 auto;"></div>
 
   <p class="form-note" style="margin-top: 8px;">
-    🎁 Bonus bei Anmeldung: "10 Prompts die dir 5h/Woche sparen" – kostenlos
+    🎁 Bonus: "10 Prompts die dir 5h/Woche sparen" – kostenlos bei Anmeldung
   </p>
 </div>
 
 <!-- FOOTER -->
 <footer>
-  <p>© 2025 AI-Hebel · <a href="#">Datenschutz</a> · <a href="#">Impressum</a> · <a href="#">Abmelden</a></p>
+  <p>© 2025 AI-Hebel · <a href="#">Datenschutz</a> · <a href="#">Impressum</a></p>
 </footer>
 
 <script>
@@ -736,7 +676,6 @@
     msg.style.display = 'block';
   }
 
-  // Intersection Observer für scroll animations
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -746,7 +685,7 @@
     });
   }, { threshold: 0.1 });
 
-  document.querySelectorAll('.card, .testi-card, .preview-box').forEach(el => {
+  document.querySelectorAll('.card, .testi-card, .preview-box, .stat').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
     el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
